@@ -56,6 +56,11 @@ public class BaseRewardItem //: IRewardItem
         return transform.Find("TexName").GetComponent<Text>();
     }
 
+    public virtual Text GetCountText()
+    {
+        return transform.Find("TexCount").GetComponent<Text>();
+    }
+
     public virtual void OnBtnClicked()
     {
 
@@ -63,30 +68,91 @@ public class BaseRewardItem //: IRewardItem
 
     public virtual void InitIconImage()
     {
-        GetIconImage().sprite = SomeAPI.GetRewardSprite(id);
+        GetIconImage().sprite = APILibrary.GetRewardSprite(id);
     }
 
     public virtual void InitNameText()
     {
-        GetNameText().text = SomeAPI.GetRewardName(id);
+        GetNameText().text = APILibrary.GetRewardName(id);
     }
 
+    public virtual void InitCountText()
+    {
+        GetNameText().text = string.Format("x{0}", UserInfo.GetRewardCount(id).ToString());
+    }
 
     public void SomeBaseFunc()
     {
         InitIconImage();
         InitNameText();
     }
+
+    public void RefreshState()
+    {
+        InitCountText();
+    }
 }
 
 
-//public class ItemContainer
-//{
-//    public ItemContainer(IEnumerator datas, IEnumerator<BaseRewardItem> items)
-//    {
+public class ItemContainer
+{
+    //private BaseRewardItem[] items;
+    private Dictionary<int, BaseRewardItem> itemDict = new Dictionary<int, BaseRewardItem>();
 
-//    }
-//}
+
+    //public ItemContainer(int count)
+    //{
+    //    items = new BaseRewardItem[count];
+    //}
+
+    //public ItemContainer(IEnumerable datas, IEnumerable<BaseRewardItem> items)
+    //{
+    //    foreach (var item in datas)
+    //    {
+
+    //    }
+    //}
+
+
+    public void Refresh(int id)
+    {
+        if (itemDict.TryGetValue(id, out BaseRewardItem item))
+        {
+            item.RefreshState();
+        }
+        else
+        {
+            throw new Exception("some tips");
+        }
+    }
+
+
+    public static ItemContainer MakeContainer(Transform[] transforms, int[] ids)
+    {
+        if (transforms == null || ids == null)
+        {
+            throw new Exception("some tips");
+        }
+
+
+        if (transforms.Length != ids.Length)
+        {
+            throw new Exception("some tips");
+        }
+
+        int length = transforms.Length;
+        ItemContainer result = new ItemContainer();
+        for (int i = 0; i < length; i++)
+        {
+            BaseRewardItem item = new BaseRewardItem(transforms[i], ids[i]);
+            item.SomeBaseFunc();
+            result.itemDict.Add(ids[i], item);
+        }
+
+        return result;
+    }
+
+}
 
 
 
@@ -106,7 +172,7 @@ public class MyRewardItem : BaseRewardItem
 
     public override void InitNameText()
     {
-        GetNameText().text = string.Format("[{0}]", SomeAPI.GetRewardName(id));
+        GetNameText().text = string.Format("[{0}]", APILibrary.GetRewardName(id));
     }
 
     public override void OnBtnClicked()
@@ -121,9 +187,15 @@ public class MyRewardItem : BaseRewardItem
     }
 }
 
+public class UserInfo
+{
+    public static int GetRewardCount(int id)
+    {
+        throw new Exception();
+    }
+}
 
-
-public class SomeAPI
+public static class APILibrary
 {
     public static string GetRewardName(int id)
     {
@@ -134,19 +206,45 @@ public class SomeAPI
     {
         throw new Exception();
     }
+
+    public static Transform[] GetChildren(this Transform transform)
+    {
+        Transform[] result = new Transform[transform.childCount];
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            result[i] = transform.GetChild(i);
+        }
+        return result;
+    }
 }
 
 
 public class Example : MonoBehaviour
 {
+    private ItemContainer container;
+
     private void Awake()
     {
-        BaseRewardItem item = new BaseRewardItem(transform.Find("Item1"), 1001);
-        item.SomeBaseFunc();
-
-        var data = new object();
-        MyRewardItem item1 = new MyRewardItem(transform.Find("Item2"), 1002, data);
+        BaseRewardItem item1 = new BaseRewardItem(transform.Find("Item1"), 1001);
         item1.SomeBaseFunc();
-        item1.MyFunc();
+
+        var myData = new object();
+        MyRewardItem item2 = new MyRewardItem(transform.Find("Item2"), 1002, myData);
+        item2.SomeBaseFunc();
+        item2.MyFunc();
+
+
+        container = ItemContainer.MakeContainer(transform.Find("ItemContent").GetChildren(), GetIds());
+    }
+
+    private void OnRewardInfoUpdate(int id)
+    {
+        container.Refresh(id);
+    }
+
+
+    private int[] GetIds()
+    {
+        throw new Exception();
     }
 }
