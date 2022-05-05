@@ -191,7 +191,7 @@ public class UserInfo
 {
     public static int GetRewardCount(int id)
     {
-        throw new Exception();
+        throw new NotImplementedException();
     }
 }
 
@@ -199,12 +199,12 @@ public static class APILibrary
 {
     public static string GetRewardName(int id)
     {
-        throw new Exception();
+        throw new NotImplementedException();
     }
 
     public static Sprite GetRewardSprite(int id)
     {
-        throw new Exception();
+        throw new NotImplementedException();
     }
 
     public static Transform[] GetChildren(this Transform transform)
@@ -244,6 +244,6 @@ public class Example : MonoBehaviour
 
     private int[] GetIds()
     {
-        throw new Exception();
+        throw new NotImplementedException();
     }
 }
