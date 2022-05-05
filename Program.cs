@@ -74,7 +74,8 @@ public class BaseRewardItem //: IRewardItem
 
     public void SomeBaseFunc()
     {
-        
+        InitIconImage();
+        InitNameText();
     }
 }
 
@@ -140,7 +141,8 @@ public class Example : MonoBehaviour
 {
     private void Awake()
     {
-        MyRewardItem item1 = new MyRewardItem(transform.Find("Item1"), 1001, 111);
+        var data = new object();
+        MyRewardItem item1 = new MyRewardItem(transform.Find("Item1"), 1001, data);
         item1.SomeBaseFunc();
         item1.MyFunc();
     }
