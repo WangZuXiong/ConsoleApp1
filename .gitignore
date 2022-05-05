@@ -1,0 +1,7 @@
+.vs
+bin
+ConsoleApp1
+obj
+.gitattributes
+ConsoleApp1.csproj
+ConsoleApp1.sln
