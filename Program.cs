@@ -58,7 +58,7 @@ public class BaseRewardItem //: IRewardItem
 
     public virtual void OnBtnClicked()
     {
-        //throw new NotImplementedException();
+
     }
 
     public virtual void InitIconImage()
@@ -141,8 +141,11 @@ public class Example : MonoBehaviour
 {
     private void Awake()
     {
+        BaseRewardItem item = new BaseRewardItem(transform.Find("Item1"), 1001);
+        item.SomeBaseFunc();
+
         var data = new object();
-        MyRewardItem item1 = new MyRewardItem(transform.Find("Item1"), 1001, data);
+        MyRewardItem item1 = new MyRewardItem(transform.Find("Item2"), 1002, data);
         item1.SomeBaseFunc();
         item1.MyFunc();
     }
