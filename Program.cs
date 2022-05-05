@@ -87,7 +87,7 @@ public class BaseRewardItem //: IRewardItem
         InitNameText();
     }
 
-    public void RefreshState()
+    public void Refresh()
     {
         InitCountText();
     }
@@ -118,7 +118,7 @@ public class ItemContainer
     {
         if (itemDict.TryGetValue(id, out BaseRewardItem item))
         {
-            item.RefreshState();
+            item.Refresh();
         }
         else
         {
@@ -232,7 +232,6 @@ public class Example : MonoBehaviour
         MyRewardItem item2 = new MyRewardItem(transform.Find("Item2"), 1002, myData);
         item2.SomeBaseFunc();
         item2.MyFunc();
-
 
         container = ItemContainer.MakeContainer(transform.Find("ItemContent").GetChildren(), GetIds());
     }
