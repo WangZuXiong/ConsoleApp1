@@ -68,12 +68,12 @@ public class BaseRewardItem //: IRewardItem
 
     public virtual void InitIconImage()
     {
-        GetIconImage().sprite = APILibrary.GetRewardSprite(id);
+        GetIconImage().sprite = StaticFuncLibrary.GetRewardSprite(id);
     }
 
     public virtual void InitNameText()
     {
-        GetNameText().text = APILibrary.GetRewardName(id);
+        GetNameText().text = StaticFuncLibrary.GetRewardName(id);
     }
 
     public virtual void InitCountText()
@@ -99,6 +99,16 @@ public class ItemContainer
     //private BaseRewardItem[] items;
     private Dictionary<int, BaseRewardItem> itemDict = new Dictionary<int, BaseRewardItem>();
 
+
+    public ItemContainer()
+    {
+
+    }
+
+    public ItemContainer(Transform[] transforms, int[] ids)
+    {
+
+    }
 
     //public ItemContainer(int count)
     //{
@@ -172,7 +182,7 @@ public class MyRewardItem : BaseRewardItem
 
     public override void InitNameText()
     {
-        GetNameText().text = string.Format("[{0}]", APILibrary.GetRewardName(id));
+        GetNameText().text = string.Format("[{0}]", StaticFuncLibrary.GetRewardName(id));
     }
 
     public override void OnBtnClicked()
@@ -195,7 +205,7 @@ public class UserInfo
     }
 }
 
-public static class APILibrary
+public static class StaticFuncLibrary
 {
     public static string GetRewardName(int id)
     {
@@ -216,29 +226,44 @@ public static class APILibrary
         }
         return result;
     }
+
+    public static Transform CreateGameObject(string path)
+    {
+        throw new NotImplementedException();
+    }
+
+    public static Transform[] CreateGameObject(string path, int count)
+    {
+        throw new NotImplementedException();
+    }
 }
 
 
 public class Example : MonoBehaviour
 {
-    private ItemContainer container;
+    private ItemContainer container1;
 
     private void Awake()
     {
+        //
         BaseRewardItem item1 = new BaseRewardItem(transform.Find("Item1"), 1001);
         item1.SomeBaseFunc();
-
+        //
         var myData = new object();
         MyRewardItem item2 = new MyRewardItem(transform.Find("Item2"), 1002, myData);
         item2.SomeBaseFunc();
         item2.MyFunc();
-
-        container = ItemContainer.MakeContainer(transform.Find("ItemContent").GetChildren(), GetIds());
+        //已经存在的item
+        container1 = ItemContainer.MakeContainer(transform.Find("ItemContent").GetChildren(), GetIds());
+        //支持动态生成的item
+        var itemPath = "";
+        var ids = GetIds(); 
+        ItemContainer container2 = ItemContainer.MakeContainer(StaticFuncLibrary.CreateGameObject(itemPath, ids.Length), ids);
     }
 
     private void OnRewardInfoUpdate(int id)
     {
-        container.Refresh(id);
+        container1.Refresh(id);
     }
 
 
