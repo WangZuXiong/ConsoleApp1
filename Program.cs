@@ -106,7 +106,7 @@ public class MyRewardItem : BaseRewardItem
 
     public override void InitNameText()
     {
-        GetNameText().text = string.Format("x {0}", SomeAPI.GetRewardName(id));
+        GetNameText().text = string.Format("[{0}]", SomeAPI.GetRewardName(id));
     }
 
     public override void OnBtnClicked()
