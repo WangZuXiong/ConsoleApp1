@@ -100,15 +100,15 @@ public class ItemContainer
     private Dictionary<int, BaseRewardItem> itemDict = new Dictionary<int, BaseRewardItem>();
 
 
-    public ItemContainer()
-    {
+    //public ItemContainer()
+    //{
 
-    }
+    //}
 
-    public ItemContainer(Transform[] transforms, int[] ids)
-    {
+    //public ItemContainer(Transform[] transforms, int[] ids)
+    //{
 
-    }
+    //}
 
     //public ItemContainer(int count)
     //{
@@ -256,7 +256,7 @@ public class Example : MonoBehaviour
         //已经存在的item
         container1 = ItemContainer.MakeContainer(transform.Find("ItemContent").GetChildren(), GetIds());
         //支持动态生成的item
-        var itemPath = "";
+        var itemPath = "XXX/Item";
         var ids = GetIds(); 
         ItemContainer container2 = ItemContainer.MakeContainer(StaticFuncLibrary.CreateGameObject(itemPath, ids.Length), ids);
     }
